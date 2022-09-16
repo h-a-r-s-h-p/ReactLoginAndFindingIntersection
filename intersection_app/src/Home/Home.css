@@ -1,0 +1,18 @@
+button{
+    width: 80px;
+    height: 40px;
+    margin: 15px;
+  }
+  .blueButton{
+    background-color:lightseagreen;
+    color: white;
+  }
+  
+  .whiteButton{
+    background-color: white;
+    color: black;
+  }
+
+  .submit{
+    width: 160px;
+  }
