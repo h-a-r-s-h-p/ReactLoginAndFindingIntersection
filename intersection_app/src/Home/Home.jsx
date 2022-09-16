@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import "./Home.css";
-
 class Home extends Component {
     constructor(props) {
         super(props);
@@ -18,34 +17,48 @@ class Home extends Component {
 
     render() {
         let SignIn_btn_class = this.state.SignUpOrSignIn === "Sign In" ? "blueButton" : "whiteButton";
-        let SignOut_btn_class = this.state.SignUpOrSignIn === "Sign Up" ? "blueButton" : "whiteButton";
+        let SignUp_btn_class = this.state.SignUpOrSignIn === "Sign Up" ? "blueButton" : "whiteButton";
         return (
-            <div>
-                <form /*onSubmit={this.handleSubmit}*/>
-                    <input type="text"
-                        name="email"
-                        placeholder="email"
-                        value={this.state.email}
-                    // onChange={this.handleChange}
-                    />
-                    <input type="text"
-                        name="password"
-                        placeholder="password"
-                        value={this.state.password}
-                    // onChange={this.handleChange}
-                    />
-                    <button className="submit" >{this.state.SignUpOrSignIn} </button>
-                </form>
-                <button className={SignIn_btn_class}
-                    onClick={(e) => {
-                        this.state.SignUpOrSignIn = "Sign In";
-                    }}> "Sign In" </button>
-                <button className={SignOut_btn_class}
-                    onClick={(e) => {
-                        this.state.SignUpOrSignIn = "Sign Up";
-                    }}> "Sign Up" </button>
+            <body>
+                {console.log(`SignUpOrSignIn = ` + this.state.SignUpOrSignIn)}
+                {console.log(`SignIn_btn_class = ` + SignIn_btn_class)}
+                {console.log(`SignIn_Up_class = ` + SignUp_btn_class)}
+                <div id="container">
+                    <div id="inner_container">
+                        <h1> Welcome to Grapheme Labs</h1>
+                        <div class="container-fluid">
+                            <form >
+                                <div class="form-group">
+                                    <div class="email-input-box">
+                                        <input placeholder="Enter Email" type="email"
+                                            class="form-control" formControlName="email" />
+                                    </div>
 
-            </div>
+                                    <div class="password-input-box">
+                                        <input placeholder="Enter Password" type="password"
+                                            class="form-control" formControlName="password" />
+                                    </div>
+
+                                </div>
+
+                                <button class="btn btn-success" type="submit">{this.state.SignUpOrSignIn}</button>
+
+                            </form>
+                        </div >
+                    </div >
+                </div >
+
+                <div id="outer-container">
+                    <button className={SignIn_btn_class}
+                        onClick={() => {
+                            this.setState({ SignUpOrSignIn: "Sign In" })
+                        }}> "Sign In" </button>
+                    <button className={SignUp_btn_class}
+                        onClick={() => {
+                            this.setState({ SignUpOrSignIn: "Sign Up" })
+                        }}> "Sign Up" </button>
+                </div>
+            </body >
         );
     }
 }
