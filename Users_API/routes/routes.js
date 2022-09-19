@@ -32,13 +32,32 @@ router.get('/getAll', async(req, res) => {
 })
 
 //Get by email Method
-router.get('/getOne/:email', (req, res) => {
-    res.send('Get by ID API')
+router.get('/getOne/:email', async(req, res) => {
+    try{
+        const data = await Model.findOne({email:req.params.email})
+        res.json(data)
+    }
+    catch(error){
+        res.status(500).json({message: error.message})
+    }
 })
 
-//Update by ID Method
-router.patch('/update/:id', (req, res) => {
-    res.send('Update by ID API')
+//Update by email Method
+router.patch('/update/:email', async(req, res) => {
+    try{
+        const email = req.params.email;
+        const updatedData = req.body;
+        const options = {new: true};
+
+        const result = await Model.findOneAndUpdate(
+            {email : email},
+            updatedData,
+            options )
+        res.send(result)
+    }
+    catch(error){
+        res.status(400).json({message:error.message})
+    }
 })
 
 //Delete by ID Method
