@@ -1,9 +1,12 @@
 import React from 'react';
+import { useParams } from 'react-router-dom';
 
-function Profile(props) {
+
+function Profile() {
+    const params = useParams()
     return (
         <div>
-            Welcome {props.name}
+            Welcome {params.email}
         </div>
     );
 }
