@@ -13,31 +13,42 @@ function Home(props) {
     const [reentered_password, setreenteredpassword] = useState("");
     const [SignUpOrSignIn, setSignUpSignIn] = useState("Sign In");
 
-    const user_data = {
-        name: name,
-        email: email,
-        password: password,
-    }
-
     let navigate = useNavigate();
 
 
-    const handleSubmit = () => {
-        console.log("handle Submit called");
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        console.log("handle Submit called")
         console.log("email = " + email)
         console.log("password = " + password)
+        // navigate('/profile/'+`${email}`)
         if (SignUpOrSignIn === "Sign In") {
-            navigate("/profile/" + `${email}`)
+            console.log("Inside signIn")
+            const data = Communicator.fetchfind(email)
+            if (data == null) {
+                console.log('user not registered')
+                navigate("/")
+            }
+            else {
+                if (data.password === password) {
+                    console.log('password is correct')
+                    navigate("/profile/" + `${email}`)
+                }
+                else {
+                    console.log('password incorrect')
+                    navigate("/")
+                }
+            }
         }
         else {
             if (password !== reentered_password) {
                 console.log('passwords does not match')
-                // navigate("/")
+                navigate("/")
             }
             else {
                 console.log('password and reentered passwords are equal')
                 Communicator.fetchAdd();
-                // navigate("/profile/" + `${email}`)
+                navigate("/profile/" + `${email}`)
             }
         }
     }
@@ -104,7 +115,7 @@ function Home(props) {
                                     )
                                 }
                             })()}
-                            {console.log('SignUporSignIn = '+SignUpOrSignIn)}
+                            {/* {console.log('SignUporSignIn = ' + SignUpOrSignIn)} */}
                             <button className="btn btn-success" >{SignUpOrSignIn}</button>
 
                         </form>
@@ -120,7 +131,7 @@ function Home(props) {
                 <button className={SignUp_btn_class}
                     onClick={() => {
                         setSignUpSignIn("Sign Up")
-                    }}> Sign Up </button>
+                    }}> Register</button>
             </div>
         </div >
     );

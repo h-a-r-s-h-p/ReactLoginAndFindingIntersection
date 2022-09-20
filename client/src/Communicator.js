@@ -11,15 +11,21 @@ const fetchAdd = async (state) => {
     newUser.name = state.name;
     newUser.email = state.email;
     newUser.password = state.password;
-    console.log(newUser)
     let response = await fetch(URL + "post", {
         method: 'POST',
         body: newUser,
     });
     let data = await response.json();
-    console.log(data)
+    console.log("The user added is "+data)
 };
 
+const fetchfind= async(email) => {
+    console.log('inside fetchfind')
+    let response = await fetch(URL+"getOne/"+`${email}`)
+    const data = await response.json()
+    console.log("the user fetched is "+ data)
+    return data
+}
 
 // GET with fetch API
     // useEffect(() => {
