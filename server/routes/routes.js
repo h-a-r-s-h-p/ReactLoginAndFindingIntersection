@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router()
 const Model = require('../model/model');
 module.exports = router
+const helper = require("../helper/helper")
 
 //Post Method
 router.post('/post', async (req, res) => {
@@ -21,23 +22,38 @@ router.post('/post', async (req, res) => {
     }
 })
 
-//Get all Method
-router.get('/getAll', async (req, res) => {
+//Get by email Method
+router.post('/getOne', async (req, res) => {
     res.set('Access-Control-Allow-Origin', '*');
+    res.set('Access-Control-Allow-Headers','*')
+    res.set("Access-Control-Allow-Credentials", "true")
     try {
-        const data = await Model.find();
-        res.json(data)
+        console.log("requested email = "+ req.body.email)
+        const data = await Model.findOne({ email: req.body.email })
+        console.log("data = "+data)
+        if(data===null){
+            res.json(null)
+        }
+        else{
+        const passwordsMatches = helper.VerifyPassword(data,req.body);
+        if(passwordsMatches){
+            res.json(data);
+        }
+        else{
+            res.json("Incorrect Password!")
+        }
+        }
     }
     catch (error) {
         res.status(500).json({ message: error.message })
     }
 })
 
-//Get by email Method
-router.get('/getOne/:email', async (req, res) => {
+//Get all Method
+router.get('/getAll', async (req, res) => {
     res.set('Access-Control-Allow-Origin', '*');
     try {
-        const data = await Model.findOne({ email: req.params.email })
+        const data = await Model.find();
         res.json(data)
     }
     catch (error) {

@@ -1,11 +1,11 @@
-
 const URL = "http://localhost:3001/"
+
 const SignUpUserData = {
     name: "",
     email: "",
     password: ""
 }
-const fetchAdd = async (state) => {
+export const fetchAdd = async (state) => {
     console.log('inside fetchAdd')
     const newUser = new SignUpUserData();
     newUser.name = state.name;
@@ -16,14 +16,23 @@ const fetchAdd = async (state) => {
         body: newUser,
     });
     let data = await response.json();
-    console.log("The user added is "+data)
+    console.log("The user added is " + data)
 };
 
-const fetchfind= async(email) => {
-    console.log('inside fetchfind')
-    let response = await fetch(URL+"getOne/"+`${email}`)
+export const fetchfind = async (email, password) => {
+    console.log('inside fetchfind, the email and password we are requesting are: ' + `${email} and ${password}`)
+
+    let response = await fetch(URL + "getOne",
+        {
+            method: 'POST',
+            body: JSON.stringify({
+                email: email,
+                password: password
+            })
+        }
+    )
     const data = await response.json()
-    console.log("the user fetched is "+ data)
+    console.log("the user fetched is " + data)
     return data
 }
 

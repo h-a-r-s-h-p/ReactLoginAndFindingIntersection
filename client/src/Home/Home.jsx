@@ -4,7 +4,7 @@ import "./Home.css";
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
-import Communicator from '../Communicator'
+import {fetchAdd, fetchfind} from '../Communicator'
 
 function Home(props) {
     const [name, setname] = useState("");
@@ -16,7 +16,7 @@ function Home(props) {
     let navigate = useNavigate();
 
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async(event) => {
         event.preventDefault();
         console.log("handle Submit called")
         console.log("email = " + email)
@@ -24,19 +24,20 @@ function Home(props) {
         // navigate('/profile/'+`${email}`)
         if (SignUpOrSignIn === "Sign In") {
             console.log("Inside signIn")
-            const data = Communicator.fetchfind(email)
-            if (data == null) {
+            const data =await fetchfind(email, password)
+            console.log("data got from API to client is "+  data)
+            if (data === null) {
                 console.log('user not registered')
                 navigate("/")
             }
             else {
-                if (data.password === password) {
-                    console.log('password is correct')
-                    navigate("/profile/" + `${email}`)
+                if (data==="Incorrect Password!") {
+                    console.log('password incorrect')
+                    navigate("/")    
                 }
                 else {
-                    console.log('password incorrect')
-                    navigate("/")
+                    console.log('Password Matches')
+                    navigate("/profile/" + `${email}`)
                 }
             }
         }
@@ -47,7 +48,7 @@ function Home(props) {
             }
             else {
                 console.log('password and reentered passwords are equal')
-                Communicator.fetchAdd();
+                fetchAdd();
                 navigate("/profile/" + `${email}`)
             }
         }
