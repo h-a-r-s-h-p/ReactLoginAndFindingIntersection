@@ -4,6 +4,15 @@ const routes = require('./routes/routes')
 const app = express();
 app.use(express.json());
 
+const cors=require("cors");
+const corsOptions ={
+   origin:'*', 
+   credentials:true,            //access-control-allow-credentials:true
+   optionSuccessStatus:200,
+}
+
+app.use(cors(corsOptions)) // Use this after the variable declaration
+
 app.use('/', routes)
 require('dotenv').config();
 const mongoString = process.env.DATABASE_URL

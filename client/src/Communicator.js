@@ -25,6 +25,9 @@ export const fetchfind = async (email, password) => {
     let response = await fetch(URL + "getOne",
         {
             method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
             body: JSON.stringify({
                 email: email,
                 password: password
