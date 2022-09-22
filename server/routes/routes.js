@@ -7,6 +7,7 @@ const helper = require("../helper/helper")
 //Post Method
 router.post('/post', async (req, res) => {
     res.set('Access-Control-Allow-Origin', '*');          // added in each api to handle cors error 
+    console.log("data received = ", req)
     const data = new Model({
         email: req.body.email,
         password: req.body.password
@@ -14,6 +15,7 @@ router.post('/post', async (req, res) => {
     try {
 
         const dataToSave = await data.save();
+        console.log("data saved = ",dataToSave)
         res.status(200).json(dataToSave)
     }
 

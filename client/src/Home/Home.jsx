@@ -48,7 +48,7 @@ function Home(props) {
             }
             else {
                 console.log('password and reentered passwords are equal')
-                fetchAdd();
+                fetchAdd({name, email, password});
                 navigate("/profile/" + `${email}`)
             }
         }

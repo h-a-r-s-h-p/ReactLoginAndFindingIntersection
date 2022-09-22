@@ -7,16 +7,21 @@ const SignUpUserData = {
 }
 export const fetchAdd = async (state) => {
     console.log('inside fetchAdd')
-    const newUser = new SignUpUserData();
-    newUser.name = state.name;
-    newUser.email = state.email;
-    newUser.password = state.password;
+    SignUpUserData.name = state.name;
+    SignUpUserData.email = state.email;
+    SignUpUserData.password = state.password;
+    console.log("name = "+SignUpUserData.name)
+    console.log("email = "+SignUpUserData.email)
+    console.log("password = "+SignUpUserData.password)
     let response = await fetch(URL + "post", {
         method: 'POST',
-        body: newUser,
+        headers:{
+            'Content-Type': 'application/json'
+        },
+        body:JSON.stringify(SignUpUserData),
     });
     let data = await response.json();
-    console.log("The user added is " + data)
+    console.log("The user added is ", data)
 };
 
 export const fetchfind = async (email, password) => {
