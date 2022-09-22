@@ -3,7 +3,6 @@ import "./Home.css";
 
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useEffect } from 'react';
 import {fetchAdd, fetchfind} from '../Communicator'
 
 function Home(props) {
@@ -18,14 +17,8 @@ function Home(props) {
 
     const handleSubmit = async(event) => {
         event.preventDefault();
-        console.log("handle Submit called")
-        console.log("email = " + email)
-        console.log("password = " + password)
-        // navigate('/profile/'+`${email}`)
         if (SignUpOrSignIn === "Sign In") {
-            console.log("Inside signIn")
             const data =await fetchfind(email, password)
-            console.log("data got from API to client is "+  data)
             if (data === null) {
                 console.log('user not registered')
                 navigate("/")
