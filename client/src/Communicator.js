@@ -20,7 +20,7 @@ export const fetchAdd = async (state) => {
     console.log("The user added is ", data)
 };
 
-export const fetchfind = async (email, password) => {
+export const getData = async (email, password) => {
 
     let response = await fetch(URL + "verifyUser",
         {
@@ -38,33 +38,21 @@ export const fetchfind = async (email, password) => {
     return data
 }
 
-// GET with fetch API
-    // useEffect(() => {
-    //     fetchAll();
-    // }, []);
-
-    // const fetchAll = async () => {
-    //     console.log(URL + "getAll")
-    //     const response = await fetch(URL + "getAll");
-    //     const data = await response.json();
-    //     console.log(data);
-    //     setPosts(data);
-    // };
-    // Delete with fetchAPI
-    // const deletePost = async (id) => {
-    //   let response = await fetch(
-    //     URL+`${id}`,
-    //     {
-    //       method: 'DELETE',
-    //     }
-    //   );
-    //   if (response.status === 200) {
-    //     setPosts(
-    //       posts.filter((post) => {
-    //         return post.id !== id;
-    //       })
-    //     );
-    //   } else {
-    //     return;
-    //   }
-    // };
+export const updatePassword = async(email,newPassword)=>{
+    let response = await fetch(URL+"update/"+email ,
+        {
+            method: 'PATCH',
+            headers:{
+                'Content-Type':'application/json'
+            },
+            body: JSON.stringify({
+                password:newPassword
+            })
+        }
+    )
+    // console.log("check")
+    const data = await response.json()
+    console.log("response received about login status of user is ",data)
+    
+    return data;
+}

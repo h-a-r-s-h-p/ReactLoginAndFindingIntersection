@@ -3,7 +3,7 @@ import "./Home.css";
 
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import {fetchAdd, fetchfind} from '../Communicator'
+import {fetchAdd, getData} from '../Communicator'
 
 function Home(props) {
     const [name, setname] = useState("");
@@ -18,31 +18,33 @@ function Home(props) {
     const handleSubmit = async(event) => {
         event.preventDefault();
         if (SignUpOrSignIn === "Sign In") {
-            const data =await fetchfind(email, password)
+            const data =await getData(email, password)
             if (data === null) {
+                alert("user not registered")
                 console.log('user not registered')
                 navigate("/")
             }
             else {
                 if (data==="Incorrect Password!") {
+                    alert("password incorrect")
                     console.log('password incorrect')
                     navigate("/")    
                 }
                 else {
-                    console.log('Password Matches')
+                    console.log('Password Matches, the data sent to profile is +' ,data)
                     navigate("/profile/" + `${email}`)
                 }
             }
         }
         else {
-            if (password !== reentered_password) {
+            if (password !== reentered_password) { 
                 console.log('passwords does not match')
                 navigate("/")
             }
             else {
                 console.log('password and reentered passwords are equal')
                 fetchAdd({name, email, password});
-                navigate("/profile/" + `${email}`)
+                navigate("/")
             }
         }
     }

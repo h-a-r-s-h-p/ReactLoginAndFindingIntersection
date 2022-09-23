@@ -1,4 +1,6 @@
 # Getting Started with Create React App
+# Never update state inside useEffect
+Never update state inside useEffect, because it leads to a loop, as whenever there is any change in the state of the component the component is re-rendered, and if the component is re-rendered, the useEffect will again be called which will again update the state and the process will go on indefinitely.
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 

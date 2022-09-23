@@ -68,12 +68,12 @@ router.patch('/update/:email', async (req, res) => {
     res.set('Access-Control-Allow-Origin', '*');
     try {
         const email = req.params.email;
-        const updatedData = req.body;
+        const newPassword = req.body.newPassword;
         const options = { new: true };
 
         const result = await Model.findOneAndUpdate(
             { email: email },
-            updatedData,
+            {password:newPassword},
             options)
         res.send(result)
     }
