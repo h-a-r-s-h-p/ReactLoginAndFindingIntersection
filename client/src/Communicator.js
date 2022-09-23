@@ -9,7 +9,7 @@ export const fetchAdd = async (state) => {
     SignUpUserData.name = state.name;
     SignUpUserData.email = state.email;
     SignUpUserData.password = state.password;
-    let response = await fetch(URL + "post", {
+    let response = await fetch(URL + "register", {
         method: 'POST',
         headers:{
             'Content-Type': 'application/json'
@@ -22,7 +22,7 @@ export const fetchAdd = async (state) => {
 
 export const fetchfind = async (email, password) => {
 
-    let response = await fetch(URL + "getOne",
+    let response = await fetch(URL + "verifyUser",
         {
             method: 'POST',
             headers: {

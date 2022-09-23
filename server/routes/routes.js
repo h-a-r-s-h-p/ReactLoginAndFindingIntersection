@@ -5,7 +5,7 @@ module.exports = router
 const helper = require("../helper/helper")
 
 //Post Method
-router.post('/post', async (req, res) => {
+router.post('/register', async (req, res) => {
     res.set('Access-Control-Allow-Origin', '*');          // added in each api to handle cors error 
     console.log("data received = ", req)
     const data = new Model({
@@ -25,7 +25,7 @@ router.post('/post', async (req, res) => {
 })
 
 //Get by email Method
-router.post('/getOne', async (req, res) => {
+router.post('/verifyUser', async (req, res) => {
     res.set('Access-Control-Allow-Origin', '*');
     res.set('Access-Control-Allow-Headers','*')
     res.set("Access-Control-Allow-Credentials", "true")
