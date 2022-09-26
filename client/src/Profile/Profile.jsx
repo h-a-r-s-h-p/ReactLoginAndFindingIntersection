@@ -1,6 +1,6 @@
 import React from 'react';
 import { useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import * as xlsx from "xlsx"
 
 
@@ -8,6 +8,14 @@ function Profile() {
     const [data, setData] = useState([])
     const [commonElements, setCommonElements] = useState([])
     const params = useParams()
+    const navigate = useNavigate();
+
+    const logoutButtonClicked=()=>{
+        localStorage.setItem('login',false)
+        console.log("After logout login = ", localStorage.getItem('login'))
+        navigate("/")
+    }
+    
 
     const onChange = (e) => {
         let file_received = e.target.files[0]
@@ -84,12 +92,13 @@ function Profile() {
                         </tr>
                     ))}
                     {
-                        <tc >
+                        <tr >
                             <td>{commonElements}</td>
-                        </tc>
+                        </tr>
                     }
                 </tbody>
             </table>
+            <button className='Logout' onClick={()=>logoutButtonClicked()}> Log Out</button>
         </div>
 
     );

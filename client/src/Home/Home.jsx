@@ -4,6 +4,7 @@ import "./Home.css";
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {fetchAdd, getData} from '../Communicator'
+import { useEffect } from 'react';
 
 function Home(props) {
     const [name, setname] = useState("");
@@ -13,7 +14,7 @@ function Home(props) {
     const [SignUpOrSignIn, setSignUpSignIn] = useState("Sign In");
 
     let navigate = useNavigate();
-
+    console.log("In home page, login = ", localStorage.getItem('login'))
 
     const handleSubmit = async(event) => {
         event.preventDefault();
@@ -32,6 +33,7 @@ function Home(props) {
                 }
                 else {
                     console.log('Password Matches, the data sent to profile is +' ,data)
+                    localStorage.setItem('login',true)
                     navigate("/profile/" + `${email}`)
                 }
             }
@@ -43,6 +45,7 @@ function Home(props) {
             }
             else {
                 console.log('password and reentered passwords are equal')
+                alert("You are successfully registered. Please login with your credentials!")
                 fetchAdd({name, email, password});
                 navigate("/")
             }
