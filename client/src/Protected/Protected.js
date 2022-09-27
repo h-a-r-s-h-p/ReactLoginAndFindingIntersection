@@ -2,19 +2,27 @@ import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 function Protected(props) {
-    const {Component} = props;
+    const { Component } = props;
     const navigate = useNavigate();
-    useEffect(()=>{
-        let login = localStorage.getItem('login');
-        console.log("Inside Protected, login = ", login)
-        if(login==="false"){
+
+    let user = JSON.parse(localStorage.getItem('user'));
+    useEffect(() => {
+        console.log("Inside protected component")
+        console.log("User inside protected = ", user)
+        if (!user) {
             alert("Please login to go to profile")
             navigate('/')
         }
     })
     return (
         <div>
-            <Component/>
+            {(() => {
+                if (user) {
+                    return (
+                        <Component/>
+                    )
+                }
+            })()}
         </div>
     );
 }

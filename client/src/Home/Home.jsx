@@ -3,8 +3,8 @@ import "./Home.css";
 
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import {fetchAdd, getData} from '../Communicator'
-import { useEffect } from 'react';
+import { fetchAdd, getData } from '../Services/Communicator'
+import authService from '../Services/auth-service';
 
 function Home(props) {
     const [name, setname] = useState("");
@@ -14,39 +14,34 @@ function Home(props) {
     const [SignUpOrSignIn, setSignUpSignIn] = useState("Sign In");
 
     let navigate = useNavigate();
-    console.log("In home page, login = ", localStorage.getItem('login'))
 
-    const handleSubmit = async(event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
         if (SignUpOrSignIn === "Sign In") {
-            const data =await getData(email, password)
-            if (data === null) {
-                alert("user not registered")
+            const data =await authService.login(email, password)
+            console.log("Data received from login auth service is ",data)
+            // const data =await getData(email, password)
+            if (data.message !== "Successfully LoggedIn") {
+                alert(data.message)
                 console.log('user not registered')
                 navigate("/")
             }
             else {
-                if (data==="Incorrect Password!") {
-                    alert("password incorrect")
-                    console.log('password incorrect')
-                    navigate("/")    
-                }
-                else {
-                    console.log('Password Matches, the data sent to profile is +' ,data)
-                    localStorage.setItem('login',true)
-                    navigate("/profile/" + `${email}`)
-                }
+                console.log('Password Matches, the data sent to profile is +', data)
+                navigate("/profile",{state:{email:email}})
             }
         }
         else {
-            if (password !== reentered_password) { 
+            if (password !== reentered_password) {
                 console.log('passwords does not match')
                 navigate("/")
             }
             else {
                 console.log('password and reentered passwords are equal')
-                alert("You are successfully registered. Please login with your credentials!")
-                fetchAdd({name, email, password});
+                const res = await authService.register(name,email,password)
+                // console.log("data received from register auth service is ", res)
+                alert(res.message)
+                // fetchAdd({ name, email, password });     //this is without jwt 
                 navigate("/")
             }
         }

@@ -12,7 +12,7 @@ function App() {
       <div>
         <Routes>                                            {/* Routes is wrapped because everything outside routes will be present in every component */}
           <Route exact path="/" element={<Home />} />
-          <Route exact path="/profile/:email" element={<Protected Component = {Profile} />} />
+          <Route exact path="/profile" element={<Protected Component = {Profile} />} />
         </Routes>
       </div>
       <footer> @author Harsh Parihar</footer>

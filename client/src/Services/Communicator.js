@@ -5,6 +5,7 @@ const SignUpUserData = {
     email: "",
     password: ""
 }
+
 export const fetchAdd = async (state) => {
     SignUpUserData.name = state.name;
     SignUpUserData.email = state.email;

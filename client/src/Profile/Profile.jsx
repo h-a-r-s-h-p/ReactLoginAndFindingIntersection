@@ -1,18 +1,20 @@
 import React from 'react';
 import { useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useLocation, useNavigate} from 'react-router-dom';
 import * as xlsx from "xlsx"
+import authService from '../Services/auth-service';
 
 
 function Profile() {
     const [data, setData] = useState([])
     const [commonElements, setCommonElements] = useState([])
-    const params = useParams()
     const navigate = useNavigate();
+    const location = useLocation();
+    console.log("user inside profile= ", localStorage.getItem("user"));
 
     const logoutButtonClicked=()=>{
-        localStorage.setItem('login',false)
-        console.log("After logout login = ", localStorage.getItem('login'))
+        authService.logout()
+        console.log("After loggin out user = ", localStorage.getItem("user"));
         navigate("/")
     }
     
@@ -72,7 +74,7 @@ function Profile() {
 
     return (
         <div>
-            <h1>Welcome {params.email}</h1>
+            <h1>Welcome {location.state.email}</h1>
             <h2> Upload the file below</h2>
             <input type="file" name="excel-file" onChange={(e) => onChange(e)} />
 

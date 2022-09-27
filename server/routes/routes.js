@@ -15,7 +15,7 @@ router.post('/signin', async (req, res) => {
         email: req.body.email
     })
     if (!data) {
-        return res.status(404).send({ message: "User Not Registered." })
+        return res.send({ message: "User Not Registered." })
     }
 
     const passwordIsValid = bcrypt.compareSync(
@@ -24,9 +24,9 @@ router.post('/signin', async (req, res) => {
     )
 
     if (!passwordIsValid) {
-        return res.status(401).send({
+        return res.send({
             accessToken: null,
-            message: "Invalid Password"
+            message: "Incorrect Password"
         })
     }
 
