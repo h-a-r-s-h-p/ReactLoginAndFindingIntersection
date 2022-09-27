@@ -9,8 +9,8 @@ function Profile() {
     const [data, setData] = useState([])
     const [commonElements, setCommonElements] = useState([])
     const navigate = useNavigate();
-    const location = useLocation();
-    console.log("user inside profile= ", localStorage.getItem("user"));
+    const current_user = localStorage.getItem("user")
+    console.log("user inside profile= ", current_user);
 
     const logoutButtonClicked=()=>{
         authService.logout()
@@ -63,7 +63,7 @@ function Profile() {
             return common_elements
         }
         array1.forEach(element => {
-            if (array2.find(iterator => iterator === element) !== undefined) {
+            if (array2.find(iterator => iterator === element) !== undefined && element!=="") {
                 common_elements.push(element)
             }
         })
@@ -74,7 +74,8 @@ function Profile() {
 
     return (
         <div>
-            <h1>Welcome {location.state.email}</h1>
+            {console.log("current user email = ", current_user.email)}
+            <h1>Welcome {current_user.email}</h1>
             <h2> Upload the file below</h2>
             <input type="file" name="excel-file" onChange={(e) => onChange(e)} />
 

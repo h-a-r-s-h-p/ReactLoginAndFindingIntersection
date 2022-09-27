@@ -3,7 +3,6 @@ import "./Home.css";
 
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { fetchAdd, getData } from '../Services/Communicator'
 import authService from '../Services/auth-service';
 
 function Home(props) {
@@ -20,15 +19,13 @@ function Home(props) {
         if (SignUpOrSignIn === "Sign In") {
             const data =await authService.login(email, password)
             console.log("Data received from login auth service is ",data)
-            // const data =await getData(email, password)
             if (data.message !== "Successfully LoggedIn") {
                 alert(data.message)
-                console.log('user not registered')
                 navigate("/")
             }
             else {
                 console.log('Password Matches, the data sent to profile is +', data)
-                navigate("/profile",{state:{email:email}})
+                navigate("/profile")
             }
         }
         else {
@@ -41,7 +38,6 @@ function Home(props) {
                 const res = await authService.register(name,email,password)
                 // console.log("data received from register auth service is ", res)
                 alert(res.message)
-                // fetchAdd({ name, email, password });     //this is without jwt 
                 navigate("/")
             }
         }
