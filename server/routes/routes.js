@@ -4,6 +4,65 @@ const Model = require('../model/model');
 module.exports = router
 const helper = require("../helper/helper")
 
+const jwt = require("jsonwebtoken")
+const bcrypt = require("bcryptjs")
+
+//SignIn
+router.post('/signin', async (req, res) => {
+    res.set('Access-Control-Allow-Origin', '*');          // added in each api to handle cors error 
+    let jwtSecretKey  = process.env.SECRET_KEY
+    const data = await Model.findOne({
+        email: req.body.email
+    })
+    if (!data) {
+        return res.status(404).send({ message: "User Not Registered." })
+    }
+
+    const passwordIsValid = bcrypt.compareSync(
+        req.body.password,
+        data.password
+    )
+
+    if (!passwordIsValid) {
+        return res.status(401).send({
+            accessToken: null,
+            message: "Invalid Password"
+        })
+    }
+
+    var token = jwt.sign({ email: data.email }, jwtSecretKey, {
+        expiresIn: 86400 //24 hr
+    })
+
+    res.status(200).send({
+        email: data.email,
+        accessToken: token,
+        message: "Successfully LoggedIn"
+    })
+})
+
+//Registration
+router.post('/jwtregister', async (req, res) => {
+    res.set('Access-Control-Allow-Origin', '*');          // added in each api to handle cors error 
+    const data = await Model.findOne({
+        email: req.body.email
+    })
+    if (!data) {
+        const user = new Model({
+            name: req.body.name,
+            email: req.body.email,
+            password: bcrypt.hashSync(req.body.password,)
+        })
+
+        await user.save()
+        res.send({message:"User registered successfully. Please login now."})
+    }
+    else{
+        res.send({message:"User already registered."})
+    }
+
+})
+
 //Post Method
 router.post('/register', async (req, res) => {
     res.set('Access-Control-Allow-Origin', '*');          // added in each api to handle cors error 
@@ -15,7 +74,7 @@ router.post('/register', async (req, res) => {
     try {
 
         const dataToSave = await data.save();
-        console.log("data saved = ",dataToSave)
+        console.log("data saved = ", dataToSave)
         res.status(200).json(dataToSave)
     }
 
@@ -27,23 +86,23 @@ router.post('/register', async (req, res) => {
 //Get by email Method
 router.post('/verifyUser', async (req, res) => {
     res.set('Access-Control-Allow-Origin', '*');
-    res.set('Access-Control-Allow-Headers','*')
+    res.set('Access-Control-Allow-Headers', '*')
     res.set("Access-Control-Allow-Credentials", "true")
     try {
-        console.log("requested email = "+ req.body.email)
+        console.log("requested email = " + req.body.email)
         const data = await Model.findOne({ email: req.body.email })
-        console.log("data = "+data)
-        if(data===null){
+        console.log("data = " + data)
+        if (data === null) {
             res.json(null)
         }
-        else{
-        const passwordsMatches = helper.VerifyPassword(data,req.body);
-        if(passwordsMatches){
-            res.json(data);
-        }
-        else{
-            res.json("Incorrect Password!")
-        }
+        else {
+            const passwordsMatches = helper.VerifyPassword(data, req.body);
+            if (passwordsMatches) {
+                res.json(data);
+            }
+            else {
+                res.json("Incorrect Password!")
+            }
         }
     }
     catch (error) {
@@ -73,7 +132,7 @@ router.patch('/update/:email', async (req, res) => {
 
         const result = await Model.findOneAndUpdate(
             { email: email },
-            {password:newPassword},
+            { password: newPassword },
             options)
         res.send(result)
     }
